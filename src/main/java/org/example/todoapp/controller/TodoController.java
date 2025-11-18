@@ -7,12 +7,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class TodoController {
+    private final TodoRepository todoRepository = new TodoRepository();
 
     @GetMapping("/todos")
-    public String todos() {
-        return "todos";
+    public String todos(Model model) {
+        // 이전에 만들었던 repository 와 다른 객체를 생성하면 안됨
+//       TodoRepository todoRepository = new TodoRepository();
+        List<TodoDto> todos =  todoRepository.findAll();
+        model.addAttribute("todos", todos);
+
+
+        // return "todos";
+        return "redirect:/todos";
     }
 
     @GetMapping("/todos/new")
@@ -29,7 +39,7 @@ public class TodoController {
         // TodoDto 객체 생성
         TodoDto todoDto = new TodoDto(null, title, content, false);
 
-        TodoRepository todoRepository = new TodoRepository();
+         // TodoRepository todoRepository = new TodoRepository();
 
         TodoDto todo = todoRepository.save(todoDto);
         model.addAttribute("todo", todo);

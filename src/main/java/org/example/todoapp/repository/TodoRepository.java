@@ -2,6 +2,8 @@ package org.example.todoapp.repository;
 
 import org.example.todoapp.dto.TodoDto;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap; // 안정성이 높음
 
@@ -14,5 +16,9 @@ public class TodoRepository {
         todo.setId(nextId++);
         storage.put(todo.getId(), todo);
         return todo;
+    }
+
+    public List<TodoDto> findAll() {
+        return new ArrayList<>(storage.values());
     }
 }
