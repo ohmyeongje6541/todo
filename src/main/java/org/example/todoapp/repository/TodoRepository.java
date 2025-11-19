@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap; // 안정성이 높음
 
 @Repository
@@ -26,8 +27,9 @@ public class TodoRepository {
         return new ArrayList<>(storage.values());
     }
 
-    public TodoDto findById(Long id) {
-        return storage.get(id);
+    public Optional<TodoDto> findById(Long id) {
+       // return storage.get(id);
+        return Optional.ofNullable(storage.get(id));
     }
 
     public void deleteById(Long id) {
