@@ -10,17 +10,16 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class TodoappApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(TodoappApplication.class, args);
-    }
-
     @Bean
-    public CommandLineRunner init() {
+    public CommandLineRunner init(TodoRepository todoRepository) {
         return args -> {
-            TodoRepository todoRepository = new TodoRepository();
             todoRepository.save(new TodoDto(null, "study", "JAVA", false));
-            todoRepository.save(new TodoDto(null, "cook", "kimbap", false));
+            todoRepository.save(new TodoDto(null, "cook", "kimbap", true));
             todoRepository.save(new TodoDto(null, "workout", "run", false));
         };
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(TodoappApplication.class, args);
     }
 }
