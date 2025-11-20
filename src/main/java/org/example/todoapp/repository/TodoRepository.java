@@ -12,11 +12,10 @@ import java.util.concurrent.ConcurrentHashMap; // 안정성이 높음
 @Repository
 public class TodoRepository {
     private final Map<Long, TodoDto> storage = new ConcurrentHashMap<>();
-    private Long nextId = 1L; // L = Long
+    private Long nextId = 1L;
 
     public TodoDto save(TodoDto todo) {
         if (todo.getId() == null) {
-            // 데이터를 저장하는 로직
             todo.setId(nextId++);
         }
         storage.put(todo.getId(), todo);
@@ -28,7 +27,7 @@ public class TodoRepository {
     }
 
     public Optional<TodoDto> findById(Long id) {
-       // return storage.get(id);
+//        return storage.get(id);
         return Optional.ofNullable(storage.get(id));
     }
 
@@ -40,10 +39,19 @@ public class TodoRepository {
         return storage.values().stream()
                 .filter((todo) -> todo.getTitle().contains(keyword))
                 .toList();
+
     }
 
     public List<TodoDto> findByCompleted(boolean completed) {
-        return storage.values().stream().filter((todo) -> todo.isCompleted() == completed)
+        return storage.values().stream()
+                .filter(todo -> todo.isCompleted() == completed)
                 .toList();
     }
+
+    public void deleteCompleted() {
+        storage.entrySet().removeIf(
+                item -> item.getValue().isCompleted()
+        );
+    }
+
 }
